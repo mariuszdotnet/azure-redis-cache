@@ -15,7 +15,7 @@ Login-AzureRmAccount
 
 Get-AzureSubscription
 
-Select-AzureSubscription -SubscriptionId $subscriptionId
+Select-AzureRmSubscription -SubscriptionId $subscriptionId
 
 # Create the new Azure Resource Group
 New-AzureRmResourceGroup -Name $resourceGroupName -Location $resourceGroupLocation
