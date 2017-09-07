@@ -10,33 +10,20 @@
     },
     "redisCacheSKU": {
       "type": "string",
-      "allowedValues": [
-        "Basic",
-        "Standard"
-      ],
-      "defaultValue": "Standard",
+      "defaultValue": "Premium",
       "metadata": {
         "description": "The pricing tier of the new Azure Redis Cache."
       }
     },
     "redisCacheFamily": {
       "type": "string",
-      "defaultValue": "C",
+      "defaultValue": "P",
       "metadata": {
         "description": "The family for the sku."
       }
     },
     "redisCacheCapacity": {
       "type": "int",
-      "allowedValues": [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
       "defaultValue": 1,
       "metadata": {
         "description": "The size of the new Azure Redis Cache instance. "
@@ -48,21 +35,45 @@
       "metadata": {
         "description": "A boolean value that indicates whether to allow access via non-SSL ports."
       }
+    },
+    "existingSubnetName":{
+      "type": "string",
+      "metadata": {
+        "description": "Name of othe existing dedicated subnet for the Redis deployment. "
+      }
+    },
+    "existingVnetName":{
+      "type": "string",
+      "metadata": {
+        "description": "Existing vNet for the Redis deployment. "
+      }
+    },
+    "existingVnetRG":{
+      "type": "string",
+      "metadata": {
+        "description": "Existing vNet for the Redis deployment. "
+      }
     }
+  },
+  "variables": {
+    "existingVnetID": "[resourceId(parameters('existingVnetRG'),'Microsoft.Network/virtualNetworks', parameters('existingVnetName'))]",
+    "subnetId": "[concat(variables('existingVnetID'),'/subnets/',parameters('existingSubnetName'))]"
   },
   "resources": [
     {
-      "apiVersion": "2015-08-01",
+      "apiVersion": "2017-02-01",
       "name": "[parameters('redisCacheName')]",
       "type": "Microsoft.Cache/Redis",
       "location": "[resourceGroup().location]",
       "properties": {
-        "enableNonSslPort": "[parameters('enableNonSslPort')]",
         "sku": {
           "capacity": "[parameters('redisCacheCapacity')]",
           "family": "[parameters('redisCacheFamily')]",
           "name": "[parameters('redisCacheSKU')]"
-        }
+        },
+        "enableNonSslPort": "[parameters('enableNonSslPort')]",
+        "redisConfiguration": {},
+        "subnetId": "[variables('subnetId')]"
       }
     }
   ]

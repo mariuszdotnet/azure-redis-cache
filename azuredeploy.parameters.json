@@ -9,10 +9,19 @@
             "value": 1
         },
         "redisCacheSKU":{
-            "value": "Standard"
+            "value": "Premium"
         },
         "redisCacheFamily":{
-            "value": "C"
+            "value": "P"
+        },
+        "existingSubnetName":{
+            "value": "default"
+        },
+        "existingVnetName":{
+            "value": "redis-vnet"
+        },
+        "existingVnetRG":{
+            "value": "redis-auto-rg"
         }
     }
 }
